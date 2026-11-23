@@ -15,3 +15,22 @@
 .regional-card-area{font-size:12px;color:var(--muted)}
 .regional-card-action{margin-top:9px;color:var(--accent);font-size:12px;font-weight:700}
 @media(max-width:700px){.regional-heading{display:block}.regional-help{display:block;margin-top:11px}.regional-grid{grid-template-columns:1fr}.regional-card{padding:16px}}
+
+/* Primary nearby official calendar — shown before imported events. */
+.featured-local{margin:0 auto 20px;padding:0 0 18px}
+.featured-local-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:16px}
+.featured-local-head h2{font-family:Manrope,sans-serif;font-size:clamp(22px,3vw,30px);margin:7px 0 0}
+.featured-local-tag{font-size:11px;border:1px solid #615585;color:#cabaff;border-radius:24px;padding:7px 11px;white-space:nowrap}
+.featured-local-card{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:160px;border:1px solid #7462a6;border-radius:18px;background:linear-gradient(120deg,#302a51 0%,#272740 65%,#171f31 100%);padding:27px 32px;box-shadow:0 11px 38px #0606123b}
+.featured-local-kicker{color:#d6bafc;letter-spacing:1.8px;font-size:11px;font-weight:750}
+.featured-local-information h3{margin:7px 0 4px;font-size:clamp(26px,3vw,38px);letter-spacing:-.8px}
+.featured-local-information p{font-size:14px;color:#e7e0f3;line-height:1.5;margin:6px 0}
+.featured-local-disclaimer{display:block;font-size:12px;color:#bdc0d0;margin-top:14px;line-height:1.5}
+.featured-local-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;border:0;border-radius:11px;background:#bba5ff;color:#161223;padding:16px 20px;font-size:14px;font-weight:800;white-space:nowrap;min-height:50px;cursor:pointer}
+.featured-local-button:hover{background:#d2c1ff}
+.featured-local-empty p{max-width:510px;color:#d0ccdf;font-size:14px;line-height:1.65}
+.manual-city-label{display:block;margin:16px 0 8px;color:#d9d1ed;font-size:13px}
+.manual-city-input{width:100%;border:1px solid #565b79;background:#232b43;color:#fff;border-radius:10px;padding:13px;outline:none}
+.manual-city-input:focus-visible{border-color:#bba5ff;box-shadow:0 0 0 2px #bba5ff22}
+#lookupCityBtn{display:block;width:100%;margin:10px 0 12px}
+@media(max-width:700px){.featured-local-head{align-items:start}.featured-local-tag{font-size:9px}.featured-local-card{flex-direction:column;align-items:stretch;padding:22px;gap:18px}.featured-local-button{width:100%;white-space:normal;text-align:center}.featured-local-information h3{font-size:27px}}
