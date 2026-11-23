@@ -38,15 +38,42 @@ const REGION_CALENDARS=[
 {name:'Ukuaru',region:'Arvo Pärdile pühendatud muusikamaja · Rakvere',url:'https://ukuaru.ee/et/sundmused',lat:59.3471,lng:26.3558},
 {name:'Eesti Kontsert',region:'Kontserdid üle Eesti',url:'https://concert.ee/',nationwide:true}
 ];
+// Regional calendars represent distinct local areas. An event from another
+// island/county must not hide the selected area's official calendar just
+// because the configured search radius crosses a regional boundary.
+const REGIONAL_ANCHORS=[
+  ...REGION_CALENDARS.filter(x=>!x.nationwide&&x.name!=='Ukuaru').map(x=>({area:x.name,lat:x.lat,lng:x.lng})),
+  {area:'Saaremaa',lat:58.2528,lng:22.4865},
+  {area:'Saaremaa',lat:58.61,lng:23.23}, // Muhu
+  {area:'Hiiumaa',lat:58.80,lng:22.69}, // southern Hiiumaa
+];
+function regionAt(lat,lng){
+  let nearest=null,closest=Infinity;
+  for(const x of REGIONAL_ANCHORS){
+    const km=distance(lat,lng,x.lat,x.lng);
+    if(km<closest){nearest=x.area;closest=km}
+  }
+  return nearest;
+}
+function eventRegion(e){
+  const explicit=String(e.region||e.county||'').toLocaleLowerCase('et-EE');
+  if(explicit.includes('saare'))return 'Saaremaa';
+  if(explicit.includes('hii'))return 'Hiiumaa';
+  const source=String(e.source||'').toLocaleLowerCase('et-EE');
+  if(source.includes('saare'))return 'Saaremaa';
+  return regionAt(Number(e.lat),Number(e.lng));
+}
 function hasLocalApiEvents(){
   if(!state.place)return false;
+  const area=regionAt(state.place.lat,state.place.lng);
   const now=Date.now();
   return state.events.some(e=>{
     const lat=Number(e.lat),lng=Number(e.lng);
     const start=Date.parse(e.start),end=Date.parse(e.end||e.start);
     if(!Number.isFinite(lat)||!Number.isFinite(lng)||!Number.isFinite(start))return false;
     if((Number.isFinite(end)?end:start)<now)return false;
-    return distance(state.place.lat,state.place.lng,lat,lng)<=state.radius;
+    return eventRegion(e)===area
+      &&distance(state.place.lat,state.place.lng,lat,lng)<=state.radius;
   });
 }
 function renderFeaturedCalendar(){
@@ -59,7 +86,7 @@ function renderFeaturedCalendar(){
     return;
   }
   // The prominent external calendar is a fallback only when there are no
-  // upcoming API events inside the selected search radius. Search/category/date
+  // upcoming API events FROM THE SAME REGION inside the search radius. Search/category/date
   // filters do not suppress the API-based local coverage check.
   if(state.loading||!state.dataReady||hasLocalApiEvents()){
     section.hidden=true;
