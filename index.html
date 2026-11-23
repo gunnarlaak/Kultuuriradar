@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="et">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0c1120" />
+  <meta name="description" content="Avasta oma lähedal toimuvad kontserdid, etendused, näitused ja muud kultuurisündmused." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Kultuuriradar" />
+  <meta property="og:title" content="Kultuuriradar — kultuur sinu ümber" />
+  <meta property="og:description" content="Leia kultuurisündmused enda lähedal." />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzxPwJ4kM9KgbZUG9kz7hKkGStD6+04k=" crossorigin="anonymous" />
+  <title>Kultuuriradar — kultuur sinu ümber</title>
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+  <header class="topbar app-width">
+    <a class="brand" href="./" aria-label="Kultuuriradari avaleht">
+      <span class="brand-symbol" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="brand-copy"><strong>KULTUURI<span>RADAR</span></strong><small>AVASTA OMA ÜMBRUS</small></span>
+    </a>
+    <div class="top-actions">
+      <button class="top-icon" type="button" id="savedToggle" title="Salvestatud üritused" aria-label="Salvestatud üritused"><svg viewBox="0 0 24 24" fill="none"><path d="M6 4.75A2.75 2.75 0 0 1 8.75 2h6.5A2.75 2.75 0 0 1 18 4.75V22l-6-4-6 4V4.75Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span class="saved-count" id="savedCount" hidden>0</span></button>
+      <button class="install-btn" type="button" id="installBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v3h16v-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Paigalda äpp</span></button>
+    </div>
+  </header>
+
+  <main class="app-width">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="live-dot"></span> SINU KOHALIK KULTUURIKOMPASS</div>
+        <h1 id="heroTitle">Midagi head<br/>toimub <em>sinu lähedal.</em></h1>
+        <p>Kontserdid, teater, näitused, festivalid ja muud elamused. Ühest kohast, sinu asukoha järgi.</p>
+        <div class="location-bar">
+          <button type="button" class="geo-btn" id="geoBtn"><svg viewBox="0 0 24 24" fill="none"><path d="m12 21 7.4-9.2a6.8 6.8 0 1 0-14.8 0L12 21Z" stroke="currentColor" stroke-width="1.65"/><circle cx="12" cy="10.3" r="2.5" stroke="currentColor" stroke-width="1.65"/></svg> <span id="locationName">Vali asukoht</span><span class="geo-arrow">⌄</span></button>
+          <div class="bar-divider"></div>
+          <label class="radius-label" for="radiusSelect">Raadius</label>
+          <select id="radiusSelect" aria-label="Otsingu raadius">
+            <option value="5">5 km</option><option value="10">10 km</option><option value="25">25 km</option><option value="50" selected>50 km</option><option value="100">100 km</option><option value="200">200 km</option><option value="400">400 km</option>
+          </select>
+          <button class="find-btn" id="findBtn" type="button">Leia üritused <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="location-hint" id="locationHint">Luba asukoht või vali linn käsitsi.</div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orbit orbit-1"></div><div class="orbit orbit-2"></div><div class="orbit orbit-3"></div>
+        <div class="orbit-center"><span class="inner-glow"></span><svg viewBox="0 0 68 68" fill="none"><path d="M33 8v12M33 48v12M8 34h12M48 34h12M15 15l8 8M43 43l10 10M53 15l-9 9M23 44l-8 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="34" cy="34" r="8" stroke="currentColor" stroke-width="2"/></svg></div>
+        <span class="orbit-point point-one"></span><span class="orbit-point point-two"></span><span class="orbit-point point-three"></span>
+        <div class="radar-label radar-label-top"><span class="tiny-dot violet"></span> MUUSIKA</div>
+        <div class="radar-label radar-label-bottom"><span class="tiny-dot pink"></span> KUNST</div>
+      </div>
+    </section>
+
+    <section class="content" aria-label="Üritused">
+      <div class="section-head">
+        <div><div class="section-kicker">AVASTA MIDAGI UUT</div><h2>Üritused sinu ümber <span class="result-number" id="eventCount">—</span></h2><p class="section-subtitle" id="resultSubtitle">Otsime sinu piirkonna kultuurielamusi.</p></div>
+        <div class="view-switch" role="group" aria-label="Kuvamisviis"><button class="view-btn active" type="button" id="listViewBtn" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none"><path d="M8 6h13M8 12h13M8 18h13M3 6h1M3 12h1M3 18h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Nimekiri</button><button class="view-btn" type="button" id="mapViewBtn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Zm6-3v15m6-12v15" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> Kaart</button></div>
+      </div>
+
+      <div class="filter-panel">
+        <div class="filter-topline">
+          <div class="category-scroller" id="categoryFilters" role="group" aria-label="Kategooria">
+            <button type="button" class="chip active" data-category="all" aria-pressed="true">Kõik</button>
+            <button type="button" class="chip" data-category="music" aria-pressed="false">♫ Muusika</button>
+            <button type="button" class="chip" data-category="theatre" aria-pressed="false">◈ Teater</button>
+            <button type="button" class="chip" data-category="art" aria-pressed="false">✳ Näitused</button>
+            <button type="button" class="chip" data-category="cinema" aria-pressed="false">▣ Kino</button>
+            <button type="button" class="chip" data-category="festival" aria-pressed="false">✺ Festivalid</button>
+            <button type="button" class="chip" data-category="other" aria-pressed="false">✦ Muu</button>
+          </div>
+        </div>
+        <div class="filter-bottomline">
+          <label class="searchbox"><svg viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.8" stroke="currentColor" stroke-width="1.6"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input id="searchInput" type="search" placeholder="Otsi üritust või kohta..." autocomplete="off" /></label>
+          <select class="date-select" id="dateSelect" aria-label="Ajavahemik"><option value="all">Kõik tulevased</option><option value="today">Täna</option><option value="tomorrow">Homme</option><option value="weekend">Sel nädalavahetusel</option><option value="7" selected>Järgmised 7 päeva</option><option value="30">Järgmised 30 päeva</option><option value="90">Järgmised 90 päeva</option></select>
+          <select class="sort-select" id="sortSelect" aria-label="Sorteerimine"><option value="date">Järjesta: kuupäev</option><option value="distance">Järjesta: lähimad</option></select>
+        </div>
+      </div>
+
+      <div class="notice" id="notice" hidden role="status"></div>
+      <div class="loading-state" id="loadingState" hidden aria-live="polite"><div class="spinner"></div><p>Otsime üritusi...</p></div>
+      <div id="eventList" class="event-grid" aria-live="polite"></div>
+      <div id="mapPanel" class="map-panel" hidden><div id="eventsMap" role="application" aria-label="Üritused kaardil"></div><p class="map-credit">Kaart: © OpenStreetMapi kaastöötajad</p></div>
+      <div id="emptyState" class="empty-state" hidden><div class="empty-glyph">⌁</div><h3>Siin on hetkel vaikne.</h3><p id="emptyDescription">Valitud tingimustega sündmusi ei leitud.</p><div class="empty-actions"><button type="button" id="expandSearchBtn" class="secondary-btn">Suurenda otsinguala</button><button type="button" id="clearFiltersBtn" class="secondary-btn">Tühista filtrid</button></div><p class="empty-small">Andmekogud ei pruugi sisaldada kõiki kohalikke sündmusi.</p></div>
+      <div class="footer-meta"><span id="sourceInfo">Andmed: päringuga ühendatud korraldajad ja sündmusportaalid.</span><span id="updatedInfo"></span></div>
+    </section>
+  </main>
+
+  <footer class="bottom-footer app-width"><span class="footer-brand">KULTUURIRADAR <span>◌</span> </span><span>Avasta rohkem. Mine välja.</span><button type="button" id="aboutBtn">Andmeallikad ja privaatsus</button></footer>
+
+  <dialog id="locationDialog" class="app-dialog"><form method="dialog"><div class="dialog-head"><div><span class="modal-kicker">ASUKOHT</span><h3>Kus kultuuri otsime?</h3></div><button type="submit" class="close-btn" aria-label="Sulge">×</button></div><button type="button" class="locate-action" id="detectLocationBtn">◎ &nbsp; Kasuta minu praegust asukohta</button><p class="dialog-help">Või vali linn. Täpne asukoht jääb sinu brauserisse, kuid koordinaadid saadetakse ürituste otsimiseks valitud API-le.</p><div class="city-list" id="cityList"></div></form></dialog>
+  <dialog id="installDialog" class="app-dialog"><form method="dialog"><div class="dialog-head"><div><span class="modal-kicker">MOBIILIÄPP</span><h3>Paigalda Kultuuriradar</h3></div><button type="submit" class="close-btn" aria-label="Sulge">×</button></div><p id="installInstructions">Androidis ava see leht Chrome'is ja vali menüüst „Install app“ või „Lisa avakuvale“. iPhone'is ava Safari, vajuta jagamisnuppu ja vali „Add to Home Screen“.</p><button class="locate-action" type="submit">Selge</button></form></dialog>
+  <dialog id="aboutDialog" class="app-dialog"><form method="dialog"><div class="dialog-head"><div><span class="modal-kicker">TEAVE</span><h3>Andmeallikad</h3></div><button type="submit" class="close-btn" aria-label="Sulge">×</button></div><div class="about-text"><p>Äpp ühendab avalike andmeallikate sündmusi. Algses seadistuses on Saaremaa sündmuste API. Cloudflare Workeri kaudu saab lisada Ticketmasteri, Fienta korraldajad ja oma sündmuste JSON-voo.</p><p>Kõiki Eesti sündmusi ei ole võimalik lubada enne, kui üleriigilised andmeallikad on liidestatud. Tühjad tulemused ei tähenda tingimata, et üritusi pole.</p><p>Asukohta kasutatakse ainult otsimiseks. Salvestatud üritused ja filtrite eelistused säilivad selles seadmes. Serveripoolne logimine sõltub sinu enda majutus- ja API-seadetest.</p></div><button type="submit" class="locate-action">Sulge</button></form></dialog>
+  <script src="./config.js"></script>
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+  <script defer src="./app.js"></script>
+</body>
+</html>
