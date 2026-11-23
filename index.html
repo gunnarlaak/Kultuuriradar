@@ -60,6 +60,19 @@
       </div>
     </section>
 
+    <section class="featured-local" id="featuredLocal" aria-labelledby="featuredLocalTitle">
+      <div class="featured-local-head">
+        <div><div class="section-kicker">ALUSTA OMA PIIRKONNAST</div><h2 id="featuredLocalTitle">Sinu piirkonna üritused</h2></div>
+        <span class="featured-local-tag">Ametlik kalender</span>
+      </div>
+      <div id="featuredLocalResult" aria-live="polite">
+        <div class="featured-local-card featured-local-empty">
+          <div><div class="featured-local-kicker">Asukohapõhine soovitus</div><p>Luba asukoht või vali linn, et näha lähimat piirkondlikku kultuurikalendrit.</p></div>
+          <button class="featured-local-button" id="featuredChooseLocation" type="button">Vali asukoht ↗</button>
+        </div>
+      </div>
+    </section>
+
     <section class="content" aria-label="Üritused">
       <div class="section-head">
         <div><div class="section-kicker">AVASTA MIDAGI UUT</div><h2>Üritused sinu ümber <span class="result-number" id="eventCount">—</span></h2><p class="section-subtitle" id="resultSubtitle">Otsime sinu piirkonna kultuurielamusi.</p></div>
@@ -100,7 +113,7 @@
 
   <footer class="bottom-footer app-width"><span class="footer-brand">KULTUURIRADAR <span>◌</span> </span><span>Avasta rohkem. Mine välja.</span><button type="button" id="aboutBtn">Andmeallikad ja privaatsus</button></footer>
 
-  <dialog id="locationDialog" class="app-dialog"><form method="dialog"><div class="dialog-head"><div><span class="modal-kicker">ASUKOHT</span><h3>Kus kultuuri otsime?</h3></div><button type="submit" class="close-btn" aria-label="Sulge">×</button></div><button type="button" class="locate-action" id="detectLocationBtn">◎ &nbsp; Kasuta minu praegust asukohta</button><p class="dialog-help">Või vali linn. Täpne asukoht jääb sinu brauserisse, kuid koordinaadid saadetakse ürituste otsimiseks valitud API-le.</p><div class="city-list" id="cityList"></div></form></dialog>
+  <dialog id="locationDialog" class="app-dialog"><form method="dialog"><div class="dialog-head"><div><span class="modal-kicker">ASUKOHT</span><h3>Kus kultuuri otsime?</h3></div><button type="submit" class="close-btn" aria-label="Sulge">×</button></div><button type="button" class="locate-action" id="detectLocationBtn">◎ &nbsp; Kasuta minu praegust asukohta</button><p class="dialog-help">Või vali linn. Täpne asukoht jääb sinu brauserisse, kuid koordinaadid saadetakse ürituste otsimiseks valitud API-le.</p><label class="manual-city-label" for="citySearchInput">Otsi linna või asulat</label><input id="citySearchInput" class="manual-city-input" type="search" placeholder="Näiteks Tõrva, Haapsalu, Kärdla..." autocomplete="off" /><div class="city-list" id="cityList"></div><p id="citySearchHelp" class="dialog-help" hidden>Sellist asukohta loendis praegu ei ole. Vali lähim linn või kasuta GPS-i.</p></form></dialog>
   <dialog id="installDialog" class="app-dialog"><form method="dialog"><div class="dialog-head"><div><span class="modal-kicker">MOBIILIÄPP</span><h3>Paigalda Kultuuriradar</h3></div><button type="submit" class="close-btn" aria-label="Sulge">×</button></div><p id="installInstructions">Androidis ava see leht Chrome'is ja vali menüüst „Install app“ või „Lisa avakuvale“. iPhone'is ava Safari, vajuta jagamisnuppu ja vali „Add to Home Screen“.</p><button class="locate-action" type="submit">Selge</button></form></dialog>
   <dialog id="aboutDialog" class="app-dialog"><form method="dialog"><div class="dialog-head"><div><span class="modal-kicker">TEAVE</span><h3>Andmeallikad</h3></div><button type="submit" class="close-btn" aria-label="Sulge">×</button></div><div class="about-text"><p>Äpp ühendab avalike andmeallikate sündmusi. Algses seadistuses on Saaremaa sündmuste API. Cloudflare Workeri kaudu saab lisada Ticketmasteri, Fienta korraldajad ja oma sündmuste JSON-voo.</p><p>Kõiki Eesti sündmusi ei ole võimalik lubada enne, kui üleriigilised andmeallikad on liidestatud. Tühjad tulemused ei tähenda tingimata, et üritusi pole.</p><p>Asukohta kasutatakse ainult otsimiseks. Salvestatud üritused ja filtrite eelistused säilivad selles seadmes. Serveripoolne logimine sõltub sinu enda majutus- ja API-seadetest.</p></div><button type="submit" class="locate-action">Sulge</button></form></dialog>
   <script src="./config.js"></script>
