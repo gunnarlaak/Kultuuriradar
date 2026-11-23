@@ -32,7 +32,7 @@ const REGION_CALENDARS=[
 {name:'Pärnu',region:'Pärnu ja Pärnumaa',url:'https://visitparnu.com/uritused/',lat:58.3859,lng:24.4971},
 {name:'Narva',region:'Narva ja Ida-Virumaa',url:'https://visitnarva.ee/et/uritused/',lat:59.3791,lng:28.1903},
 {name:'Haapsalu',region:'Haapsalu ja Läänemaa',url:'https://midateha.visithaapsalu.com/',lat:58.9431,lng:23.5414},
-{name:'Hiiumaa',region:'Hiiumaa',url:'https://hiiumaa.ee/sundmused/',lat:58.998,lng:22.747},
+{name:'Hiiumaa',region:'Hiiumaa',url:'https://hiiumaa.ee/events/list/',lat:58.998,lng:22.747},
 {name:'Vormsi',region:'Vormsi saar',url:'https://vormsi.ee/sundmused/',lat:58.999,lng:23.232}
 ];
 function renderCalendars(){const el=$('regionalCalendarLinks');if(!el)return;const rows=[...REGION_CALENDARS].sort((a,b)=>state.place?distance(state.place.lat,state.place.lng,a.lat,a.lng)-distance(state.place.lat,state.place.lng,b.lat,b.lng):0);el.innerHTML=rows.map(x=>'<a class="regional-card" target="_blank" rel="noopener noreferrer" href="'+esc(x.url)+'"><span class="regional-card-place">'+esc(x.name)+'</span><span class="regional-card-area">'+esc(x.region)+'</span><span class="regional-card-action">Vaata ametlikku kalendrit ↗</span></a>').join('')}
