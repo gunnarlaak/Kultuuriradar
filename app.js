@@ -68,7 +68,13 @@ function collectorEvent(item) {
   const coords=Number.isFinite(item.latitude) && Math.abs(item.latitude)<=90 &&
       Number.isFinite(item.longitude) && Math.abs(item.longitude)<=180;
   const placeName=value=>String(value||'').trim().toLocaleLowerCase('et-EE').replace(/ (linn|vald)$/,'');
-  const approximate=coords?null:CITIES.find(city=>[item.venue,item.municipality].some(value=>placeName(value)===placeName(city[0])));
+  const venue=placeName(item.venue);
+  const kuressaareVenue=['kuressaare linnus','kuressaare linnusmuuseum','kuressaare kultuurikeskus',
+    'saare maakonna keskraamatukogu lugemissaal'].includes(venue);
+  const approximate=coords?null:CITIES.find(city=>(
+    (kuressaareVenue && city[0]==='Kuressaare') ||
+    [item.venue,item.municipality].some(value=>placeName(value)===placeName(city[0]))
+  ));
   return {id:'collector-'+item.id,title:item.title,start:new Date(start).toISOString(),
     end:new Date(end).toISOString(),dateOnly:dayOnly,startDay:item.start_date,endDay:item.end_date,
     venue:item.venue||item.municipality||item.county||'Asukoht täpsustamisel',
@@ -159,6 +165,7 @@ const REGION_CALENDARS=[
 {name:'Narva',region:'Narva ja Ida-Virumaa',url:'https://visitnarva.ee/et/uritused/',lat:59.3791,lng:28.1903},
 {name:'Haapsalu',region:'Haapsalu ja Läänemaa',url:'https://midateha.visithaapsalu.com/',lat:58.9431,lng:23.5414},
 {name:'Hiiumaa',region:'Hiiumaa',url:'https://hiiumaa.ee/events/list/',lat:58.998,lng:22.747},
+{name:'Saaremaa',region:'Saaremaa',url:'https://saare.events/',lat:58.2528,lng:22.4865},
 {name:'Vormsi',region:'Vormsi saar',url:'https://vormsi.ee/sundmused/',lat:58.999,lng:23.232},
 {name:'Rakvere',region:'Rakvere ja Lääne-Virumaa',url:'https://visitrakvere.com/sundmused/',lat:59.3471,lng:26.3558},
 {name:'Ukuaru',region:'Arvo Pärdile pühendatud muusikamaja · Rakvere',url:'https://ukuaru.ee/et/sundmused',lat:59.3471,lng:26.3558},
@@ -169,7 +176,6 @@ const REGION_CALENDARS=[
 // because the configured search radius crosses a regional boundary.
 const REGIONAL_ANCHORS=[
   ...REGION_CALENDARS.filter(x=>!x.nationwide&&x.name!=='Ukuaru').map(x=>({area:x.name,lat:x.lat,lng:x.lng})),
-  {area:'Saaremaa',lat:58.2528,lng:22.4865},
   {area:'Saaremaa',lat:58.61,lng:23.23}, // Muhu
   {area:'Hiiumaa',lat:58.80,lng:22.69}, // southern Hiiumaa
 ];

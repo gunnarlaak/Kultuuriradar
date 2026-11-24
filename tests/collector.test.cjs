@@ -43,3 +43,11 @@ test('preserves distinct showtimes, and filters by radius, category and end time
   api.state.cat = 'theatre';
   assert.equal(api.filtered().length, 0);
 });
+
+test('places known Kuressaare venues without treating the whole municipality as the city', () => {
+  const local = {...row, municipality:'Saaremaa vald', county:'Saare maakond'};
+  const event = api.collectorEvent({...local, venue:'Kuressaare Linnusmuuseum'});
+  assert.equal(event.approximate, true);
+  assert.equal(event.lat, 58.2528);
+  assert.equal(api.collectorEvent({...local, venue:'Kihelkonna rahvamaja'}).lat, null);
+});
