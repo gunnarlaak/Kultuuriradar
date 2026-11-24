@@ -11,7 +11,7 @@ Kui leht veel ei avane, vali GitHubi repositooriumis **Settings → Pages → Bu
 ## Omadused
 
 - GPS asukoha tuvastamine kasutaja loal; käsitsi linna valimine
-- 5–400 km otsinguala
+- 10, 25, 50 või 100 km otsinguala või kogu Eesti
 - Kuupäevade ja kategooriate filtrid, tekstiotsing
 - Nimekiri ja OpenStreetMap kaart
 - Brauserisse salvestatud lemmikud ja kalendrisse lisamine
@@ -19,11 +19,9 @@ Kui leht veel ei avane, vali GitHubi repositooriumis **Settings → Pages → Bu
 
 ## Andmeallikad ja piirangud
 
-Praegu proovib rakendus otse avalikku Saaremaa sündmuste API-t (`https://saare.events/api/events`). Brauserist esitatav päring võib CORS piirangu tõttu ebaõnnestuda. Eesti-ülene katvus ei ole veel tagatud. Puuduvaid sündmusi äpp välja ei mõtle.
+Põhiallikas on Collectori avalik Cloudflare API, mille aadress on `config.js` väljal `collectorBase`. Brauser loeb kuni 90 päeva sündmusi lehekülgede kaupa ja filtreerib asukohta seadmes. Vigase või puuduva koordinaadi korral kasutatakse tuntud asula keskpunkti, kui see on tuvastatav. Ligikaudse kauguse ees kuvatakse ~.
 
-Töökindlama API ja teiste andmeallikate jaoks on vaja avaldada Cloudflare Worker ja panna selle URL faili `config.js` väljale `apiBase`. API võtmeid ei tohi sinna panna.
-
-**NB:** GitHubi avaldamise töövoog ei avalda Workeri API-t automaatselt. Seni ei pruugi ürituste nimekiri andmeallika piirangute tõttu täituda.
+API tõrke korral kasutatakse viimast edukat koopiat või selle puudumisel Saaremaa varuandmeid. Üleriigiline valik hõlmab kõiki Collectorile teadaolevaid sündmusi. Avalikul lugemisel piisab veebilehe päritolu lisamisest Workeri CORS-i lubatud loendisse, `INGEST_TOKEN` jääb serveripoolele.
 
 ## Paigaldamine
 
@@ -32,3 +30,5 @@ Ava leht HTTPS-aadressil telefoni brauseris. Asukohateenus vajab luba. Uute sün
 ## Arendamine
 
 Kõik veebirakenduse failid asuvad repositooriumi juurkaustas; GitHub Pages ei vaja eraldi build-sammu.
+
+Käivita `node --test tests/collector.test.cjs`. Chrome’i kontrolliks käivita `node tests/browser-smoke.cjs <Chrome'i käivitusfail>`.

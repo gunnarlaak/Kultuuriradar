@@ -1,1 +1,1 @@
-window.KULTUURIRADAR_CONFIG = {apiBase: ''};
+window.KULTUURIRADAR_CONFIG = {collectorBase: 'https://kultuuriradar-api.gunnar-laak.workers.dev'};
